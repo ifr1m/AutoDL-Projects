@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional, Text, Union
 
 from nats_bench.api_utils import ArchResults
 from nats_bench.api_utils import NASBenchMetaAPI
+from nats_bench.api_utils import get_torch_home
 from nats_bench.api_utils import nats_is_dir
 from nats_bench.api_utils import nats_is_file
 from nats_bench.api_utils import PICKLE_EXT
@@ -83,17 +84,18 @@ class NATStopology(NASBenchMetaAPI):
     self._search_space_name = 'topology'
     self._fast_mode = fast_mode
     self._archive_dir = None
+    self._full_train_epochs = 200
     self.reset_time()
     if file_path_or_dict is None:
       if self._fast_mode:
         self._archive_dir = os.path.join(
-            os.environ['TORCH_HOME'], '{:}-simple'.format(ALL_BASE_NAMES[-1]))
+            get_torch_home(), '{:}-simple'.format(ALL_BASE_NAMES[-1]))
       else:
         file_path_or_dict = os.path.join(
-            os.environ['TORCH_HOME'], '{:}.{:}'.format(
+            get_torch_home(), '{:}.{:}'.format(
                 ALL_BASE_NAMES[-1], PICKLE_EXT))
-      print('{:} Try to use the default NATS-Bench (topology) path '
-            'from {:}.'.format(time_string(), file_path_or_dict))
+      print('{:} Try to use the default NATS-Bench (topology) path from '
+            'fast_mode={:} and path={:}.'.format(time_string(), self._fast_mode, file_path_or_dict))
     if isinstance(file_path_or_dict, str):
       file_path_or_dict = str(file_path_or_dict)
       if verbose:
