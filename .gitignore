@@ -125,3 +125,8 @@ TEMP-L.sh
 .nfs00*
 *.swo
 */*.swo
+
+# Visual Studio Code
+.vscode
+mlruns
+outputs
